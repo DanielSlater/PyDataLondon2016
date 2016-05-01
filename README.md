@@ -18,9 +18,15 @@ This repository contains the resources needed for the tutorial, Building a Pong 
 
 ## Resources
 
-#### PyGame Player
-#### PyGame Pong
-#### PyGame Half Pong
+#### [PyGame Player](https://github.com/DanielSlater/PyGamePlayer/blob/master/pygame_player.py)
+    Used for running reinforcement learning agents against PyGame
+#### [PyGame Pong](https://github.com/DanielSlater/PyGamePlayer/blob/master/games/pong.py)
+    PyGame implementation of pong
+#### [PyGame Half Pong](https://github.com/DanielSlater/PyGamePlayer/tree/master/games)
+    Even pong can be hard if your just a machine. 
+    Half pong is a simplified version of pong, if you can believe that is possible.
+    The score and other bits of noise are removed from the game. 
+    There is only 1 bar and it is only 80x80 pixels which speeds up training and removes the need to downsize the screen 
 
 ## Examples
 
