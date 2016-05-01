@@ -19,6 +19,7 @@ This repository contains the resources needed for the tutorial, Building a Pong 
 ## Resources
 
 #### PyGame Player
+#### PyGame Pong
 #### PyGame Half Pong
 
 ## Examples

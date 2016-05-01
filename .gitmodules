@@ -1,0 +1,3 @@
+[submodule "resources/PyGamePlayer"]
+	path = resources/PyGamePlayer
+	url = https://github.com/DanielSlater/PyGamePlayer
