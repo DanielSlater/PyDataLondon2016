@@ -10,7 +10,7 @@ This repository contains the resources needed for the tutorial, Building a Pong 
     It is possible to build everything here in [Theano](http://deeplearning.net/software/theano/) while you follow the talk.
     If anyway does any of this successfully in theano please submit it :)
 #### [Python](https://www.python.org/downloads/)
-    Ether 2 or 3 is fine.
+    Either 2 or 3 is fine.
 #### [PyGame](http://www.pygame.org/download.shtml)
     Download which ever version matches the version of Python you plan on using.
 #### [TensorFlow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html#download-and-setup)
