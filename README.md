@@ -4,11 +4,6 @@ This repository contains the resources needed for the tutorial, Building a Pong 
 
 ## Requirements
 
-#### [Linux](https://www.linuxmint.com/download.php)
-    All the examples are in tensorflow which currently does not have a windows version. 
-    If you don't fancy installing linux right now...
-    It is possible to build everything here in [Theano](http://deeplearning.net/software/theano/) while you follow the talk.
-    If anyway does any of this successfully in theano please submit it :)
 #### [Python](https://www.python.org/downloads/)
     Either 2 or 3 is fine.
 #### [PyGame](http://www.pygame.org/download.shtml)
@@ -18,9 +13,9 @@ This repository contains the resources needed for the tutorial, Building a Pong 
 #### [Matplotlib](http://matplotlib.org/users/installing.html)
     Match version
 
-## Other requirments option
+## Other requirments options
 
-Tensorflow requires an NVidea GPU and asking for Linux only is a bit of a stretch so the option is you can do this theano. The examples will still be in tensorflow, but that translates very easily to Theano and I'll try and do a few Theano examples for the day.
+Tensorflow requires an NVidea GPU and only runs on Linux/Mac so if you don't have these Theano is an option. The examples are all in tensorflow, but that translates very easily to Theano and I'll try and do a few Theano examples for the day.
 
 #### [Python](https://www.python.org/downloads/)
     Either 2 or 3 is fine.
@@ -45,9 +40,8 @@ Tensorflow requires an NVidea GPU and asking for Linux only is a bit of a stretc
 ## Examples
 
 #### [Random Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/1_random_half_pong_player.py)
+#### [Random With Base Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/2_random_with_base_half_pong_player.py)
 #### [MLP Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/3_mlp_half_pong_player.py)
 #### [Tensor flow Q learning](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/4_tensorflow_q_learning.py)
-#### MLP Q learning Half Pong player
-#### Convolutional network Half Pong player
-#### Experience replay + Explore Half Pong player
-#### Full pong player
+#### [MLP Q learning Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/5_mlp_q_learning_half_pong_player.py)
+#### [Convolutional network Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/6_conv_net_half_pong_player.py)

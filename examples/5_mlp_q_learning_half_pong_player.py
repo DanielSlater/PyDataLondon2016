@@ -10,7 +10,6 @@ from common.half_pong_player import HalfPongPlayer
 
 
 class MLPQLearningHalfPongPlayer(HalfPongPlayer):
-    MEMORY_SIZE = 500000  # number of observations to remember
     FUTURE_REWARD_DISCOUNT = 0.99  # decay rate of past observations
     OBSERVATION_STEPS = 500.  # time steps to observe before training
     EXPLORE_STEPS = 500000.  # frames over which to anneal epsilon
@@ -26,7 +25,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
 
     def __init__(self, checkpoint_path="mlp_q_learning_half_pong", playback_mode=False, verbose_logging=True):
         """
-        MLP now trianing using Q-learning
+        MLP now training using Q-learning
         """
         self._playback_mode = playback_mode
         super(MLPQLearningHalfPongPlayer, self).__init__(run_real_time=False, force_game_fps=6)
@@ -64,7 +63,6 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
         elif playback_mode:
             raise Exception("Could not load checkpoints for playback")
 
-
     def _create_network(self):
         input_layer = tf.placeholder("float", [None, self.SCREEN_WIDTH * self.SCREEN_HEIGHT], name="input_layer")
 
@@ -87,7 +85,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
         _, binary_image = cv2.threshold(cv2.cvtColor(screen_array, cv2.COLOR_BGR2GRAY), 1, 255,
                                         cv2.THRESH_BINARY)
 
-        binary_image = np.reshape(binary_image, (80*80,))
+        binary_image = np.reshape(binary_image, (80 * 80,))
 
         # first frame must be handled differently
         if self._last_state is None:
@@ -102,7 +100,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
         self._observations.append((self._last_state, self._last_action, reward, binary_image, terminal))
 
         if len(self._observations) > self.MEMORY_SIZE:
-                self._observations.popleft()
+            self._observations.popleft()
 
         if len(self._observations) > self.OBSERVATION_STEPS:
             self._train()

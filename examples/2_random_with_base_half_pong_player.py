@@ -1,11 +1,14 @@
 import random
 
-from pygame.constants import K_DOWN, K_UP
-
 from common.half_pong_player import HalfPongPlayer
 
 
 class RandomHalfPongPlayer(HalfPongPlayer):
+    """
+    Same as 1_random half pong player except with most code moved to a base class that will be shared with other
+    examples
+    """
+
     def get_keys_pressed(self, screen_array, feedback, terminal):
         print self.score()
 
