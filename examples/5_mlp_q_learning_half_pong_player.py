@@ -15,7 +15,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
     EXPLORE_STEPS = 500000.  # frames over which to anneal epsilon
     INITIAL_RANDOM_ACTION_PROB = 1.0  # starting chance of an action being random
     FINAL_RANDOM_ACTION_PROB = 0.05  # final chance of an action being random
-    MEMORY_SIZE = 500000  # number of observations to remember
+    MEMORY_SIZE = 200000  # number of observations to remember
     MINI_BATCH_SIZE = 100  # size of mini batches
     OBS_LAST_STATE_INDEX, OBS_ACTION_INDEX, OBS_REWARD_INDEX, OBS_CURRENT_STATE_INDEX, OBS_TERMINAL_INDEX = range(5)
     LEARN_RATE = 0.0001
@@ -124,7 +124,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
         return self.action_index_to_key(action)
 
     def _choose_next_action(self, binary_image):
-        if random.random() <= self._probability_of_random_action:
+        if (not self._playback_mode) and (random.random() <= self._probability_of_random_action):
             return random.randrange(self.ACTIONS_COUNT)
         else:
             # let the net choose our action

@@ -27,7 +27,7 @@ class ConvNetHalfPongPlayer(HalfPongPlayer):
     SCREEN_WIDTH = 40
     SCREEN_HEIGHT = 40
 
-    def __init__(self, checkpoint_path="deep_q_half_pong_networks_40x40_6", playback_mode=False, verbose_logging=True):
+    def __init__(self, checkpoint_path="conv_net_half_pong_player", playback_mode=False, verbose_logging=True):
         """
         Example of deep q network for pong
 
@@ -39,7 +39,7 @@ class ConvNetHalfPongPlayer(HalfPongPlayer):
         :type verbose_logging: bool
         """
         self._playback_mode = playback_mode
-        super(ConvNetHalfPongPlayer, self).__init__(force_game_fps=6, run_real_time=playback_mode)
+        super(ConvNetHalfPongPlayer, self).__init__(force_game_fps=8, run_real_time=playback_mode)
         self.verbose_logging = verbose_logging
         self._checkpoint_path = checkpoint_path
         self._session = tf.Session()
@@ -125,7 +125,7 @@ class ConvNetHalfPongPlayer(HalfPongPlayer):
         return HalfPongPlayer.action_index_to_key(action)
 
     def _choose_next_action(self):
-        if self._playback_mode or (random.random() <= self._probability_of_random_action):
+        if (not self._playback_mode) and (random.random() <= self._probability_of_random_action):
             # choose an action randomly
             action_index = random.randrange(self.ACTIONS_COUNT)
         else:
