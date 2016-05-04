@@ -10,7 +10,8 @@ class RandomHalfPongPlayer(HalfPongPlayer):
     """
 
     def get_keys_pressed(self, screen_array, feedback, terminal):
-        print self.score()
+        if feedback != 0:
+            print self.score()
 
         action_index = random.randrange(3)
 

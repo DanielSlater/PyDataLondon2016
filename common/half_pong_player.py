@@ -35,7 +35,7 @@ class HalfPongPlayer(PyGamePlayer):
         return float(score_change), score_change == -1
 
     def score(self):
-        return sum(self._score_history)
+        return sum(self._score_history)/float(self.CUMULATIVE_SCORE_LEN)
 
     @staticmethod
     def action_index_to_key(action_index):
