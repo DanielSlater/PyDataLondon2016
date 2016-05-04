@@ -1,7 +1,7 @@
 import random
-from collections import deque
 
 from pygame.constants import K_DOWN, K_UP
+
 from resources.PyGamePlayer.games.half_pong import run
 from resources.PyGamePlayer.pygame_player import PyGamePlayer
 

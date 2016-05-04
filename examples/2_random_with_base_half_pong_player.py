@@ -7,7 +7,7 @@ from common.half_pong_player import HalfPongPlayer
 
 class RandomHalfPongPlayer(HalfPongPlayer):
     def get_keys_pressed(self, screen_array, feedback, terminal):
-        print self.cumulative_score()
+        print self.score()
 
         action_index = random.randrange(3)
 

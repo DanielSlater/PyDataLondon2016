@@ -1,9 +1,13 @@
 import tensorflow as tf
 import numpy as np
 
-NUM_STATES = 10
+# we will create a set of states, the agent get a reward for getting to the 5th one(4 in zero based array).
+# the agent can go forward or backward by one state with wrapping(so if you go back from the 1st state you go to the
+# end).
+states = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0, 10.0, 0.0, 0.0]
+NUM_STATES = len(states)
 NUM_ACTIONS = 2
-GAMMA = 0.5
+FUTURE_REWARD_DISCOUNT = 0.5
 
 
 def hot_one_state(index):
@@ -11,13 +15,7 @@ def hot_one_state(index):
     array[index] = 1.
     return array
 
-
-# we will create a set of states, the agent get a reward for getting to the 5th one(4 in zero based array).
-# the agent can go forward or backward by one state with wrapping(so if you go back from the 1st state you go to the
-# end).
-states = [(x == 4) for x in range(NUM_STATES)]
-# [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
+# The None here is for batch training
 session = tf.Session()
 state = tf.placeholder("float", [None, NUM_STATES])
 targets = tf.placeholder("float", [None, NUM_ACTIONS])
@@ -46,8 +44,8 @@ for i in range(50):
         plus_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(plus_action_index)]})[0]
 
         # these action rewards are the results of the Q function for this state and the actions minus or plus
-        action_rewards = [states[minus_action_index] + GAMMA * np.max(minus_action_state_reward),
-                          states[plus_action_index] + GAMMA * np.max(plus_action_state_reward)]
+        action_rewards = [states[minus_action_index] + FUTURE_REWARD_DISCOUNT * np.max(minus_action_state_reward),
+                          states[plus_action_index] + FUTURE_REWARD_DISCOUNT * np.max(plus_action_state_reward)]
         rewards_batch.append(action_rewards)
 
     session.run(train_operation, feed_dict={

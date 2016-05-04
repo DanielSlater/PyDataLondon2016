@@ -3,17 +3,14 @@ import os
 import random
 from collections import deque
 
-import tensorflow as tf
-import numpy as np
 import cv2
-from pygame.constants import K_DOWN, K_UP
+import numpy as np
+import tensorflow as tf
 
-from resources.PyGamePlayer.pygame_player import PyGamePlayer
-
-from resources.PyGamePlayer.games.half_pong import run
+from common.half_pong_player import HalfPongPlayer
 
 
-class ConvNetHalfPongPlayer(PyGamePlayer):
+class ConvNetHalfPongPlayer(HalfPongPlayer):
     ACTIONS_COUNT = 3  # number of valid actions. In this case up, still and down
     FUTURE_REWARD_DISCOUNT = 0.99  # decay rate of past observations
     OBSERVATION_STEPS = 50000.  # time steps to observe before training
@@ -24,7 +21,7 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
     MINI_BATCH_SIZE = 200  # size of mini batches
     STATE_FRAMES = 4  # number of frames to store in the state
     OBS_LAST_STATE_INDEX, OBS_ACTION_INDEX, OBS_REWARD_INDEX, OBS_CURRENT_STATE_INDEX, OBS_TERMINAL_INDEX = range(5)
-    SAVE_EVERY_X_STEPS = 10000
+    SAVE_EVERY_X_STEPS = 5000
     LEARN_RATE = 1e-6
     STORE_SCORES_LEN = 200.
     SCREEN_WIDTH = 40
@@ -42,7 +39,6 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
         :type verbose_logging: bool
         """
         self._playback_mode = playback_mode
-        self.last_score = 0
         super(ConvNetHalfPongPlayer, self).__init__(force_game_fps=6, run_real_time=playback_mode)
         self.verbose_logging = verbose_logging
         self._checkpoint_path = checkpoint_path
@@ -58,7 +54,6 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
         self._train_operation = tf.train.AdamOptimizer(self.LEARN_RATE).minimize(cost)
 
         self._observations = deque()
-        self._last_scores = deque()
 
         # set the first action to do nothing
         self._last_action = np.zeros(self.ACTIONS_COUNT)
@@ -86,16 +81,11 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
         ret, screen_resized_grayscaled = cv2.threshold(cv2.cvtColor(screen_array, cv2.COLOR_BGR2GRAY), 1, 255,
                                                        cv2.THRESH_BINARY)
 
-        if reward != 0.0:
-            self._last_scores.append(reward)
-            if len(self._last_scores) > self.STORE_SCORES_LEN:
-                self._last_scores.popleft()
-
         # first frame must be handled differently
         if self._last_state is None:
             # the _last_state will contain the image data from the last self.STATE_FRAMES frames
             self._last_state = np.stack(tuple(screen_resized_grayscaled for _ in range(self.STATE_FRAMES)), axis=2)
-            return ConvNetHalfPongPlayer._key_presses_from_action(self._last_action)
+            return self.action_index_to_key(1)
 
         screen_resized_grayscaled = np.reshape(screen_resized_grayscaled,
                                                (self.SCREEN_WIDTH, self.SCREEN_HEIGHT, 1))
@@ -116,7 +106,7 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
         # update the old values
         self._last_state = current_state
 
-        self._last_action = self._choose_next_action()
+        action = self._choose_next_action()
 
         if not self._playback_mode:
             # gradually reduce the probability of a random actionself.
@@ -127,13 +117,14 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
 
             print("Time: %s random_action_prob: %s reward %s scores differential %s" %
                   (self._time, self._probability_of_random_action, reward,
-                   sum(self._last_scores) / self.STORE_SCORES_LEN))
+                   self.score()))
 
-        return DeepQHalfPongPlayer._key_presses_from_action(self._last_action)
+        self._last_action = np.zeros((3,))
+        self._last_action[action] = 1.
+
+        return HalfPongPlayer.action_index_to_key(action)
 
     def _choose_next_action(self):
-        new_action = np.zeros([self.ACTIONS_COUNT])
-
         if self._playback_mode or (random.random() <= self._probability_of_random_action):
             # choose an action randomly
             action_index = random.randrange(self.ACTIONS_COUNT)
@@ -144,8 +135,7 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
                 print("Action Q-Values are %s" % readout_t)
             action_index = np.argmax(readout_t)
 
-        new_action[action_index] = 1
-        return new_action
+        return action_index
 
     def _train(self):
         # sample a mini_batch to train on
@@ -184,9 +174,6 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
         convolution_weights_2 = tf.Variable(tf.truncated_normal([4, 4, 32, 64], stddev=0.01))
         convolution_bias_2 = tf.Variable(tf.constant(0.01, shape=[64]))
 
-        convolution_weights_3 = tf.Variable(tf.truncated_normal([3, 3, 64, 64], stddev=0.01))
-        convolution_bias_3 = tf.Variable(tf.constant(0.01, shape=[64]))
-
         feed_forward_weights_1 = tf.Variable(tf.truncated_normal([256, 256], stddev=0.01))
         feed_forward_bias_1 = tf.Variable(tf.constant(0.01, shape=[256]))
 
@@ -209,13 +196,6 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
         hidden_max_pooling_layer_2 = tf.nn.max_pool(hidden_convolutional_layer_2, ksize=[1, 2, 2, 1],
                                                     strides=[1, 2, 2, 1], padding="SAME")
 
-        # hidden_convolutional_layer_3 = tf.nn.relu(
-        #     tf.nn.conv2d(hidden_max_pooling_layer_2, convolution_weights_3,
-        #                  strides=[1, 1, 1, 1], padding="SAME") + convolution_bias_3)
-        #
-        # hidden_max_pooling_layer_3 = tf.nn.max_pool(hidden_convolutional_layer_3, ksize=[1, 2, 2, 1],
-        #                                             strides=[1, 2, 2, 1], padding="SAME")
-
         hidden_convolutional_layer_3_flat = tf.reshape(hidden_max_pooling_layer_2, [-1, 256])
 
         final_hidden_activations = tf.nn.relu(
@@ -224,30 +204,6 @@ class ConvNetHalfPongPlayer(PyGamePlayer):
         output_layer = tf.matmul(final_hidden_activations, feed_forward_weights_2) + feed_forward_bias_2
 
         return input_layer, output_layer
-
-    @staticmethod
-    def _key_presses_from_action(action_set):
-        if action_set[0] == 1:
-            return [K_DOWN]
-        elif action_set[1] == 1:
-            return []
-        elif action_set[2] == 1:
-            return [K_UP]
-        raise Exception("Unexpected action")
-
-    def get_feedback(self):
-        from resources.PyGamePlayer.games.half_pong import score
-
-        # get the difference in scores between this and the last frame
-        score_change = score - self.last_score
-        self.last_score = score
-
-        return float(score_change), score_change == -1
-
-    def start(self):
-        super(ConvNetHalfPongPlayer, self).start()
-
-        run(screen_width=640, screen_height=480)
 
 
 if __name__ == '__main__':
