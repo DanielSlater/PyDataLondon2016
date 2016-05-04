@@ -15,6 +15,7 @@ This repository contains the resources needed for the tutorial, Building a Pong 
     Download which ever version matches the version of Python you plan on using.
 #### [TensorFlow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html#download-and-setup)
     Again match the version.
+#### [Matplotlib](http://matplotlib.org/users/installing.html)
 
 ## Other requirments option
 
