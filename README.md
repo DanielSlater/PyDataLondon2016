@@ -44,9 +44,9 @@ Tensorflow requires an NVidea GPU and asking for Linux only is a bit of a stretc
 
 ## Examples
 
-#### Random Half Pong player
-#### MLP Half Pong player
-#### Tensor flow Q learning
+#### [Random Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/1_random_half_pong_player.py)
+#### [MLP Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/3_mlp_half_pong_player.py)
+#### [Tensor flow Q learning](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/4_tensorflow_q_learning.py)
 #### MLP Q learning Half Pong player
 #### Convolutional network Half Pong player
 #### Experience replay + Explore Half Pong player
