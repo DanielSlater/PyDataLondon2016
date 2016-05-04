@@ -11,19 +11,20 @@ from common.half_pong_player import HalfPongPlayer
 
 class MLPQLearningHalfPongPlayer(HalfPongPlayer):
     FUTURE_REWARD_DISCOUNT = 0.99  # decay rate of past observations
-    OBSERVATION_STEPS = 500.  # time steps to observe before training
-    EXPLORE_STEPS = 500000.  # frames over which to anneal epsilon
+    OBSERVATION_STEPS = 50000.  # time steps to observe before training
+    EXPLORE_STEPS = 300000.  # frames over which to anneal epsilon
     INITIAL_RANDOM_ACTION_PROB = 1.0  # starting chance of an action being random
     FINAL_RANDOM_ACTION_PROB = 0.05  # final chance of an action being random
     MEMORY_SIZE = 200000  # number of observations to remember
     MINI_BATCH_SIZE = 100  # size of mini batches
     OBS_LAST_STATE_INDEX, OBS_ACTION_INDEX, OBS_REWARD_INDEX, OBS_CURRENT_STATE_INDEX, OBS_TERMINAL_INDEX = range(5)
-    LEARN_RATE = 0.0001
+    LEARN_RATE = 0.00001
     SAVE_EVERY_X_STEPS = 5000
     SCREEN_WIDTH = 40
     SCREEN_HEIGHT = 40
+    STATE_FRAMES = 4
 
-    def __init__(self, checkpoint_path="mlp_q_learning_half_pong", playback_mode=False, verbose_logging=True):
+    def __init__(self, checkpoint_path="5_mlp_q_learning_half_pong", playback_mode=False, verbose_logging=True):
         """
         MLP now training using Q-learning
         """
@@ -64,10 +65,11 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
             raise Exception("Could not load checkpoints for playback")
 
     def _create_network(self):
-        input_layer = tf.placeholder("float", [None, self.SCREEN_WIDTH * self.SCREEN_HEIGHT], name="input_layer")
+        input_layer = tf.placeholder("float", [None, self.SCREEN_WIDTH * self.SCREEN_HEIGHT * self.STATE_FRAMES],
+                                     name="input_layer")
 
         feed_forward_weights_1 = tf.Variable(
-            tf.truncated_normal([self.SCREEN_WIDTH * self.SCREEN_HEIGHT, 256], stddev=0.01))
+            tf.truncated_normal([self.SCREEN_WIDTH * self.SCREEN_HEIGHT * self.STATE_FRAMES, 256], stddev=0.01))
         feed_forward_bias_1 = tf.Variable(tf.constant(0.01, shape=[256]))
 
         feed_forward_weights_2 = tf.Variable(tf.truncated_normal([256, self.ACTIONS_COUNT], stddev=0.01))
@@ -85,17 +87,19 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
         _, binary_image = cv2.threshold(cv2.cvtColor(screen_array, cv2.COLOR_BGR2GRAY), 1, 255,
                                         cv2.THRESH_BINARY)
 
-        binary_image = np.reshape(binary_image, (80 * 80,))
+        binary_image = np.reshape(binary_image, (self.SCREEN_WIDTH * self.SCREEN_HEIGHT,))
 
         # first frame must be handled differently
         if self._last_state is None:
-            self._last_state = binary_image
+            self._last_state = np.concatenate(tuple(binary_image for _ in range(self.STATE_FRAMES)), axis=0)
             random_action = random.randrange(self.ACTIONS_COUNT)
 
             self._last_action = np.zeros([self.ACTIONS_COUNT])
             self._last_action[random_action] = 1.
 
             return self.action_index_to_key(random_action)
+
+        binary_image = np.append(binary_image, self._last_state[self.SCREEN_WIDTH * self.SCREEN_HEIGHT:], axis=0)
 
         self._observations.append((self._last_state, self._last_action, reward, binary_image, terminal))
 
@@ -128,7 +132,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
             return random.randrange(self.ACTIONS_COUNT)
         else:
             # let the net choose our action
-            output = self._session.run(self._input_layer, feed_dict={self._output_layer: binary_image})
+            output = self._session.run(self._output_layer, feed_dict={self._input_layer: [binary_image]})
             return np.argmax(output)
 
     def _train(self):

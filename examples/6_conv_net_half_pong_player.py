@@ -78,18 +78,18 @@ class ConvNetHalfPongPlayer(HalfPongPlayer):
 
     def get_keys_pressed(self, screen_array, reward, terminal):
         # images will be black or white
-        ret, screen_resized_grayscaled = cv2.threshold(cv2.cvtColor(screen_array, cv2.COLOR_BGR2GRAY), 1, 255,
+        ret, binary_image = cv2.threshold(cv2.cvtColor(screen_array, cv2.COLOR_BGR2GRAY), 1, 255,
                                                        cv2.THRESH_BINARY)
 
         # first frame must be handled differently
         if self._last_state is None:
             # the _last_state will contain the image data from the last self.STATE_FRAMES frames
-            self._last_state = np.stack(tuple(screen_resized_grayscaled for _ in range(self.STATE_FRAMES)), axis=2)
+            self._last_state = np.stack(tuple(binary_image for _ in range(self.STATE_FRAMES)), axis=2)
             return self.action_index_to_key(1)
 
-        screen_resized_grayscaled = np.reshape(screen_resized_grayscaled,
+        binary_image = np.reshape(binary_image,
                                                (self.SCREEN_WIDTH, self.SCREEN_HEIGHT, 1))
-        current_state = np.append(screen_resized_grayscaled, self._last_state[:, :, 1:], axis=2)
+        current_state = np.append(binary_image, self._last_state[:, :, 1:], axis=2)
 
         if not self._playback_mode:
             # store the transition in previous_observations
