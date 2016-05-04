@@ -16,6 +16,16 @@ This repository contains the resources needed for the tutorial, Building a Pong 
 #### [TensorFlow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html#download-and-setup)
     Again match the version.
 
+Tensorflow requires an NVidea GPU and asking for Linux only is a bit of a stretch so the option is you can do this theano. The examples will still be in tensorflow, but that translates very easily to Theano and I'll try and do a few Theano examples for the day.
+
+#### [Python](https://www.python.org/downloads/)
+    Either 2 or 3 is fine.
+#### [PyGame](http://www.pygame.org/download.shtml)
+    Download which ever version matches the version of Python you plan on using.
+#### [Theano](http://deeplearning.net/software/theano/install.html)
+    Again match the version.
+
+
 ## Resources
 
 #### [PyGame Player](https://github.com/DanielSlater/PyGamePlayer/blob/master/pygame_player.py)
