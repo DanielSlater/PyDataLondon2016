@@ -4,7 +4,7 @@ import numpy as np
 # we will create a set of states, the agent get a reward for getting to the 5th one(4 in zero based array).
 # the agent can go forward or backward by one state with wrapping(so if you go back from the 1st state you go to the
 # end).
-states = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+states = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 NUM_STATES = len(states)
 NUM_ACTIONS = 2
 FUTURE_REWARD_DISCOUNT = 0.5

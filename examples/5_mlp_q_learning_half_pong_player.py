@@ -99,7 +99,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
 
             return self.action_index_to_key(random_action)
 
-        binary_image = np.append(binary_image, self._last_state[self.SCREEN_WIDTH * self.SCREEN_HEIGHT:], axis=0)
+        binary_image = np.append(self._last_state[self.SCREEN_WIDTH * self.SCREEN_HEIGHT:], binary_image, axis=0)
 
         self._observations.append((self._last_state, self._last_action, reward, binary_image, terminal))
 

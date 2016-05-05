@@ -23,7 +23,6 @@ class ConvNetHalfPongPlayer(HalfPongPlayer):
     OBS_LAST_STATE_INDEX, OBS_ACTION_INDEX, OBS_REWARD_INDEX, OBS_CURRENT_STATE_INDEX, OBS_TERMINAL_INDEX = range(5)
     SAVE_EVERY_X_STEPS = 5000
     LEARN_RATE = 1e-6
-    STORE_SCORES_LEN = 200.
     SCREEN_WIDTH = 40
     SCREEN_HEIGHT = 40
 
@@ -89,7 +88,7 @@ class ConvNetHalfPongPlayer(HalfPongPlayer):
 
         binary_image = np.reshape(binary_image,
                                                (self.SCREEN_WIDTH, self.SCREEN_HEIGHT, 1))
-        current_state = np.append(binary_image, self._last_state[:, :, 1:], axis=2)
+        current_state = np.append(self._last_state[:, :, 1:], binary_image, axis=2)
 
         if not self._playback_mode:
             # store the transition in previous_observations
