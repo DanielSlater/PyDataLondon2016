@@ -40,8 +40,8 @@ for i in range(50):
         minus_action_index = (state_index - 1) % NUM_STATES
         plus_action_index = (state_index + 1) % NUM_STATES
 
-        minus_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(minus_action_index)]})[0]
-        plus_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(plus_action_index)]})[0]
+        minus_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(minus_action_index)]})
+        plus_action_state_reward = session.run(output, feed_dict={state: [hot_one_state(plus_action_index)]})
 
         # these action rewards are the results of the Q function for this state and the actions minus or plus
         action_rewards = [states[minus_action_index] + FUTURE_REWARD_DISCOUNT * np.max(minus_action_state_reward),
