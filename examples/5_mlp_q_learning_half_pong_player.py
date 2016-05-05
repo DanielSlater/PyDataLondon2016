@@ -29,7 +29,7 @@ class MLPQLearningHalfPongPlayer(HalfPongPlayer):
         MLP now training using Q-learning
         """
         self._playback_mode = playback_mode
-        super(MLPQLearningHalfPongPlayer, self).__init__(run_real_time=False, force_game_fps=6)
+        super(MLPQLearningHalfPongPlayer, self).__init__(run_real_time=self._playback_mode, force_game_fps=6)
         self.verbose_logging = verbose_logging
         self._checkpoint_path = checkpoint_path
 
