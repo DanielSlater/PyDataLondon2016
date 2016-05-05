@@ -26,7 +26,7 @@ class ConvNetHalfPongPlayer(HalfPongPlayer):
     SCREEN_WIDTH = 40
     SCREEN_HEIGHT = 40
 
-    def __init__(self, checkpoint_path="conv_net_half_pong_player", playback_mode=False, verbose_logging=True):
+    def __init__(self, checkpoint_path="6_conv_net_half_pong", playback_mode=False, verbose_logging=True):
         """
         Example of deep q network for pong
 
