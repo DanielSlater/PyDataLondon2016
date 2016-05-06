@@ -22,7 +22,20 @@ Tensorflow requires an NVidea GPU and only runs on Linux/Mac so if you don't hav
 #### [PyGame](http://www.pygame.org/download.shtml)
     Download which ever version matches the version of Python you plan on using.
 #### [Theano](http://deeplearning.net/software/theano/install.html)
-    Again match the version.
+    Download anaconda
+    
+    On windows cmd:
+    
+    >> conda install mingw libpython numpy
+    
+    Checkout Theano
+    
+    git clone https://github.com/Theano/Theano.git
+    
+    >> cd Theano
+    >> python setup.py develop
+    
+    Set your project interpreter to be using anaconda python
 
 
 ## Resources
