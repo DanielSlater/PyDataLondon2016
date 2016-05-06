@@ -15,7 +15,7 @@ This repository contains the resources needed for the tutorial, Building a Pong 
 
 ## Other requirments options
 
-Tensorflow requires an NVidea GPU and only runs on Linux/Mac so if you don't have these Theano is an option. The examples are all in tensorflow, but that translates very easily to Theano and I'll try and do a few Theano examples for the day.
+Tensorflow requires an NVidea GPU and only runs on Linux/Mac so if you don't have these Theano is an option. The examples are all in Tensorflow, but that translates very easily to Theano and we have an example Q-learning Theano implementation that can be extended to work with Pong.
 
 #### [Python](https://www.python.org/downloads/)
     Either 2 or 3 is fine.
@@ -56,5 +56,6 @@ Tensorflow requires an NVidea GPU and only runs on Linux/Mac so if you don't hav
 #### [Random With Base Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/2_random_with_base_half_pong_player.py)
 #### [MLP Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/3_mlp_half_pong_player.py)
 #### [Tensor flow Q learning](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/4_tensorflow_q_learning.py)
+#### [Theano flow Q learning](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/4_theano_q_learning.py)
 #### [MLP Q learning Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/5_mlp_q_learning_half_pong_player.py)
 #### [Convolutional network Half Pong player](https://github.com/DanielSlater/PyDataLondon2016/blob/master/examples/6_conv_net_half_pong_player.py)
