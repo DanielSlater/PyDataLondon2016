@@ -13,6 +13,11 @@ This repository contains the resources needed for the tutorial, Building a Pong 
 #### [Matplotlib](http://matplotlib.org/users/installing.html)
     Match version
 
+##Docker environment alternative
+#### Docker build
+    Have a look at the Makefile, essentially this helps you setup an xquartz environment exposed to a docker container along with the required dependencies.
+    'make all' should in theory launch you into an environment capable of running th examples straight away.
+
 ## Other requirments options
 
 Tensorflow requires an NVidea GPU and only runs on Linux/Mac so if you don't have these Theano is an option. The examples are all in Tensorflow, but that translates very easily to Theano and we have an example Q-learning Theano implementation that can be extended to work with Pong.
