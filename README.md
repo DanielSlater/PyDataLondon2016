@@ -2,16 +2,6 @@
 
 This repository contains the resources needed for the tutorial, Building a Pong playing AI in just 1 hour(Plus 4 days training time)
 
-## Requirements
-
-* [Python 2](https://www.python.org/downloads/)
-* [PyGame](http://www.pygame.org/download.shtml)
-* [TensorFlow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html#download-and-setup)
-* [Matplotlib](http://matplotlib.org/users/installing.html)
-
-Tensorflow requires an NVidia GPU and only runs on Linux/Mac so if you don't have these Theano is an option (see below). The examples are all in Tensorflow, but that translates very easily to Theano and we have an example Q-learning Theano implementation that can be extended to work with Pong.
-
-
 ### Installation Guide for OS X
 
 Tested on a Macbook Pro (late 2013) with El Capitan, unsure if GPU-support works.
@@ -78,6 +68,23 @@ Run an example:
 python 1_random_half_pong_player.py
 ```
 
+### Linux Nvidea GPU installation Guide
+
+* [Python 2](https://www.python.org/downloads/)
+* [PyGame](http://www.pygame.org/download.shtml)
+* [TensorFlow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html#download-and-setup)
+* [Matplotlib](http://matplotlib.org/users/installing.html)
+
+Tensorflow requires an NVidia GPU and only runs on Linux/Mac so if you don't have these Theano is an option (see below). The examples are all in Tensorflow, but that translates very easily to Theano and we have an example Q-learning Theano implementation that can be extended to work with Pong.
+
+## Windows/non nvidia gpu
+
+#### [Python](https://www.python.org/downloads/)
+    Either 2 or 3 is fine.
+#### [PyGame](http://www.pygame.org/download.shtml)
+    Download which ever version matches the version of Python you plan on using.
+#### [Matplotlib](http://matplotlib.org/users/installing.html)
+    Match version
 
 ### [Theano Installation Guide for Windows](http://deeplearning.net/software/theano/install.html)
 
@@ -100,8 +107,10 @@ cd Theano
 python setup.py develop
 ```
 
-Set your project interpreter to be using anaconda python
-
+###Docker environment alternative
+#### Docker build
+    Have a look at the Makefile, essentially this helps you setup an xquartz environment exposed to a docker container along with the required dependencies.
+    'make all' should in theory launch you into an environment capable of running th examples straight away.
 
 ## Resources
 
