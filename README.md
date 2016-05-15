@@ -1,6 +1,6 @@
 # Building a Pong playing AI
 
-This repository contains the resources needed for the tutorial, Building a Pong playing AI in just 1 hour(Plus 4 days training time)
+This repository contains the resources needed for the tutorial, Building a Pong playing AI in just 1 hour(Plus 4 days training time). The full video for the tutorial is on youtube [here](https://www.youtube.com/watch?v=n8NdT_3y9oY).
 
 ### Installation Guide for OS X
 
